@@ -2,5 +2,5 @@ name: 3DMapDumper
 main: famima65536\mapdumper\Main
 author: famima65536
 version: 1.0.0
-api: 5.0.0
+api: 0.0.1
 
