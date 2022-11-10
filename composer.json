@@ -1,0 +1,22 @@
+{
+    "name": "famima65536/3d-map-dumper",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "famima65536\\mapdumper\\": "src/famima65536/mapdumper"
+        }
+    },
+    "authors": [
+        {
+            "name": "famima65536",
+            "email": "famima65536@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "pocketmine/bedrock-block-upgrade-schema": "dev-master@dev",
+        "pocketmine/bedrock-data": "dev-modern-world-support@dev",
+        "pocketmine/bedrock-item-upgrade-schema": "dev-master",
+        "pocketmine/pocketmine-mp": "^5.0.0@dev",
+        "phpstan/phpstan": "^1.9"
+    }
+}

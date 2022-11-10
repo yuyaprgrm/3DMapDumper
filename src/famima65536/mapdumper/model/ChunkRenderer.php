@@ -113,46 +113,53 @@ final class ChunkRenderer{
         $factory = BlockFactory::getInstance();
         $blockRenderer = BlockRenderer::getInstance();
         $renderingEngine = new RenderingEngine($this->image, $this->yaw, $this->pitch, $this->lightDirection, $this->dotsPerBlock, $this->calculateChunkOffset($chunkHash)->subtractVector($this->offset));
+        
         World::getXZ($chunkHash, $chunkX, $chunkZ);
-        for($x = 0; $x < SubChunk::EDGE_LENGTH; $x++){
-            $xInWorld = ($chunkX << SubChunk::COORD_BIT_SIZE) + $x;
-            for($z = 0; $z < SubChunk::EDGE_LENGTH; $z++){
-                $zInWorld = ($chunkZ << SubChunk::COORD_BIT_SIZE) + $z;
-                for($y = 57; $y < World::Y_MAX; $y++){
-                    $block = $this->getBlock($xInWorld, $y, $zInWorld);
-                    if($blockRenderer->isRendered($block)){
-                        $hiderBlocks = [
-                            match($this->viewSignature->x){
-                                Signature::Positive => $this->getBlock($xInWorld - 1, $y, $zInWorld),
-                                Signature::Negative => $this->getBlock($xInWorld + 1, $y, $zInWorld),
-                                Signature::Zero => null,
-                            },
-                            match($this->viewSignature->y){
-                                Signature::Positive => $this->getBlock($xInWorld, $y - 1, $zInWorld),
-                                Signature::Negative => $this->getBlock($xInWorld, $y + 1, $zInWorld),
-                                Signature::Zero => null,
-                            },
-                            match($this->viewSignature->z){
-                                Signature::Positive => $this->getBlock($xInWorld, $y, $zInWorld - 1),
-                                Signature::Negative => $this->getBlock($xInWorld, $y, $zInWorld + 1),
-                                Signature::Zero => null,
-                            }
-                        ];
+        foreach($this->chunks[$chunkHash]->getSubChunks() as $chunkY => $subchunk){
+            if(count($subchunk->getBlockLayers()) === 0){
+                continue;
+            }
+            for($y = 0; $y < SubChunk::EDGE_LENGTH; $y++){
+                $yInWorld = $y + ($chunkY << SubChunk::COORD_BIT_SIZE);
+                for($x = 0; $x < SubChunk::EDGE_LENGTH; $x++){
+                    $xInWorld = ($chunkX << SubChunk::COORD_BIT_SIZE) + $x;
+                    for($z = 0; $z < SubChunk::EDGE_LENGTH; $z++){
+                        $zInWorld = ($chunkZ << SubChunk::COORD_BIT_SIZE) + $z;
+                        $block = $this->getBlock($xInWorld, $yInWorld, $zInWorld);
+                        if($blockRenderer->isRendered($block)){
+                            $hiderBlocks = [
+                                match($this->viewSignature->y){
+                                    Signature::Positive => $this->getBlock($xInWorld, $yInWorld - 1, $zInWorld),
+                                    Signature::Negative => $this->getBlock($xInWorld, $yInWorld + 1, $zInWorld),
+                                    Signature::Zero => null,
+                                },
+                                match($this->viewSignature->z){
+                                    Signature::Positive => $this->getBlock($xInWorld, $yInWorld, $zInWorld - 1),
+                                    Signature::Negative => $this->getBlock($xInWorld, $yInWorld, $zInWorld + 1),
+                                    Signature::Zero => null,
+                                },
+                                match($this->viewSignature->x){
+                                    Signature::Positive => $this->getBlock($xInWorld - 1, $yInWorld, $zInWorld),
+                                    Signature::Negative => $this->getBlock($xInWorld + 1, $yInWorld, $zInWorld),
+                                    Signature::Zero => null,
+                                },
+                            ];
 
-                        $hideFlag = true;
-                        foreach($hiderBlocks as $hiderBlock){
-                            if($hiderBlock === null || $hiderBlock instanceof Transparent){
-                                $hideFlag = false;
-                                break;
+                            $faceToRender = 0;
+                            foreach($hiderBlocks as $axis => $hiderBlock){
+                                if($hiderBlock === null || $hiderBlock instanceof Transparent){
+                                    $faceToRender |= (1 << $axis);
+                                }
                             }
-                        }
-                        if(!$hideFlag){
-                            $blockRenderer->render($renderingEngine, new Vector3($x, $y, $z), $block, []);
+                            if($faceToRender !== 0){
+                                $blockRenderer->render($renderingEngine, new Vector3($x, $yInWorld, $z), $faceToRender, $block, []);
+                            }
                         }
                     }
                 }
             }
         }
+        
         $renderingEngine->flush();
         $this->blockCache = [];
     }

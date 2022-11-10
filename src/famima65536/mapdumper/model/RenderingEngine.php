@@ -51,8 +51,11 @@ final class RenderingEngine{
         );
     }
 
-    public function putCube(float $x, float $y, float $z, OffsettedCubeSizeInfo $sizeInfo, Color $color) : void{
-        $this->cubes[] = new Cube($sizeInfo->offset->add($x, $y, $z), $sizeInfo->size, $color);
+    /**
+     * 
+     */
+    public function putCube(float $x, float $y, float $z, OffsettedCubeSizeInfo $sizeInfo, Color $color, int $faceToRender) : void{
+        $this->cubes[] = new Cube($sizeInfo->offset->add($x, $y, $z), $sizeInfo->size, $color, $faceToRender);
     }
 
     private function calculateCubeLayer(Cube $cube) : float{
@@ -91,7 +94,7 @@ final class RenderingEngine{
         $yColor = new Color((int) ($color->getR() * $yLevel), (int) ($color->getG() * $yLevel), (int) ($color->getB() * $yLevel), $color->getA());
         $zColor = new Color((int) ($color->getR() * $zLevel), (int) ($color->getG() * $zLevel), (int) ($color->getB() * $zLevel), $color->getA());
 
-        if($this->viewSignature->x !== Signature::Zero){
+        if($this->viewSignature->x !== Signature::Zero && $cube->shouldRender(Cube::FACE_X)){
             $gdColor = $this->getGdColorByColor($xColor);
             $points = match($this->viewSignature->x){
                 Signature::Positive => [
@@ -117,7 +120,7 @@ final class RenderingEngine{
             // );
         }
 
-        if($this->viewSignature->z !== Signature::Zero){
+        if($this->viewSignature->z !== Signature::Zero && $cube->shouldRender(Cube::FACE_Z)){
 
             $gdColor = $this->getGdColorByColor($zColor);
             $points = match($this->viewSignature->z){
@@ -144,7 +147,7 @@ final class RenderingEngine{
             // );
         }
 
-        if($this->viewSignature->y !== Signature::Zero){
+        if($this->viewSignature->y !== Signature::Zero && $cube->shouldRender(Cube::FACE_Y)){
             
             $gdColor = $this->getGdColorByColor($yColor);
             $points = match($this->viewSignature->y){

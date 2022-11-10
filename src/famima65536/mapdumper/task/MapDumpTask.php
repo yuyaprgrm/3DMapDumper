@@ -38,9 +38,16 @@ class MapDumpTask extends AsyncTask{
     }
 
     public function onCompletion(): void{
-        /** @var CommandSender $sender */
+        
+        /** 
+         * @var int[]
+         * @phpstan-var array{int, int}
+         */
         $endTime = hrtime();
+
         $renderingTime = round(($endTime[0] - $this->startTime[0]) + ($endTime[1] - $this->startTime[1]) / 10**9, 3);
+        
+        /** @var CommandSender $sender */
         $sender = $this->fetchLocal("sender");
         $sender->sendMessage("completed in $renderingTime s");
 

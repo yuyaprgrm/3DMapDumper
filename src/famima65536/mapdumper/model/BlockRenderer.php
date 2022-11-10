@@ -5,22 +5,23 @@ namespace famima65536\mapdumper\model;
 use Closure;
 use LogicException;
 use pocketmine\block\Block;
-use pocketmine\block\BlockTypeIds;
 use pocketmine\block\Slab;
 use pocketmine\block\SnowLayer;
 use pocketmine\block\Stair;
-use pocketmine\block\Transparent;
 use pocketmine\block\utils\DirtType;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\block\utils\SlabType;
 use pocketmine\block\VanillaBlocks;
+use pocketmine\block\Wheat;
 use pocketmine\color\Color;
+use pocketmine\math\Axis;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\utils\SingletonTrait;
-use pocketmine\utils\Utils;
-use pocketmine\world\World;
 
+/**
+ * @method static self getInstance()
+ */
 final class BlockRenderer{
 
     use SingletonTrait;
@@ -31,21 +32,24 @@ final class BlockRenderer{
     private OffsettedCubeSizeInfo $downerHalfCubeSizeInfo;
 
     /**
-     * @var array<int, Closure(RenderingEngine, Vector3, Block):void>
+     * @var array<int, Closure(RenderingEngine, Vector3, Cube::FACE_*, Block, array<value-of<Type::ARRAY_CONST>, Block>):void>
      */
     private array $blockRenderingFuncs = [];
 
     private function __construct(){
         $this->prepareCubeSizeInfo();
         
-        $this->register(VanillaBlocks::GRASS(), function(RenderingEngine $engine, Vector3 $position, Block $grass, array $sides){
-            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(Vector3::zero(), new Vector3(1, 7/8, 1)), Color::fromRGB(0xd68655));
-            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(new Vector3(0, 7/8, 0), new Vector3(1, 1/8, 1)), Color::fromRGB(0xa1ed7b));
+        $this->register(VanillaBlocks::GRASS(), function(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $grass, array $sides){
+            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(Vector3::zero(), new Vector3(1, 7/8, 1)), Color::fromRGB(0xd68655), Cube::FACE_XZ & $faceToRender);
+            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(new Vector3(0, 7/8, 0), new Vector3(1, 1/8, 1)), Color::fromRGB(0x569131), Cube::FACE_YXZ & $faceToRender);
         });
         $this->registerSimple(VanillaBlocks::DIRT(), Color::fromRGB(0xd68655));
         $this->registerSimple(VanillaBlocks::DIRT()->setDirtType(DirtType::COARSE()), Color::fromRGB(0x9e5a31));
         $this->registerSimple(VanillaBlocks::DIRT()->setDirtType(DirtType::ROOTED()), Color::fromRGB(0x9e5a31));
-        
+        $this->register(VanillaBlocks::FARMLAND(), function(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $farmland, array $sides){
+            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(Vector3::zero(), new Vector3(1, 7/8, 1)), Color::fromRGB(0xd68655), Cube::FACE_XZ & $faceToRender);
+            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(new Vector3(0, 7/8, 0), new Vector3(1, 1/8, 1)), Color::fromRGB(0x915631), Cube::FACE_YXZ & $faceToRender);
+        });
         $this->registerSimple(VanillaBlocks::OAK_LOG(), Color::fromRGB(0xa96e35));
         $this->registerSimple(VanillaBlocks::SPRUCE_LOG(), Color::fromRGB(0x422f03));
         $this->registerSimple(VanillaBlocks::BIRCH_LOG(), Color::fromRGB(0xe5f0e5));
@@ -91,10 +95,10 @@ final class BlockRenderer{
         $this->registerSimple(VanillaBlocks::POLISHED_DIORITE(), $polishedDioriteColor);
         $this->registerHalf(VanillaBlocks::POLISHED_DIORITE_SLAB(), $polishedDioriteColor);
         $this->registerSimple(VanillaBlocks::POLISHED_DIORITE_STAIRS(), $polishedDioriteColor);
-        $polishedAndersiteColor = Color::fromRGB(0x7f7f7f);
-        $this->registerSimple(VanillaBlocks::POLISHED_ANDESITE(), $polishedAndersiteColor);
-        $this->registerHalf(VanillaBlocks::POLISHED_ANDESITE_SLAB(), $polishedAndersiteColor);
-        $this->registerSimple(VanillaBlocks::POLISHED_ANDESITE_STAIRS(), $polishedAndersiteColor);
+        $polishedAndesiteColor = Color::fromRGB(0x7f7f7f);
+        $this->registerSimple(VanillaBlocks::POLISHED_ANDESITE(), $polishedAndesiteColor);
+        $this->registerHalf(VanillaBlocks::POLISHED_ANDESITE_SLAB(), $polishedAndesiteColor);
+        $this->registerSimple(VanillaBlocks::POLISHED_ANDESITE_STAIRS(), $polishedAndesiteColor);
         $polishedGraniteColor = Color::fromRGB(0xf98c4d);
         $this->registerSimple(VanillaBlocks::POLISHED_GRANITE(), $polishedGraniteColor);
         $this->registerHalf(VanillaBlocks::POLISHED_GRANITE_SLAB(), $polishedGraniteColor);
@@ -103,6 +107,18 @@ final class BlockRenderer{
         $this->registerSimple(VanillaBlocks::COBBLESTONE(), $cobblestoneColor);
         $this->registerHalf(VanillaBlocks::COBBLESTONE_SLAB(), $cobblestoneColor);
         $this->registerSimple(VanillaBlocks::COBBLESTONE_STAIRS(), $cobblestoneColor);
+        $dioriteColor = Color::fromRGB(0xc2c6c0);
+        $this->registerSimple(VanillaBlocks::DIORITE(), $dioriteColor);
+        $this->registerHalf(VanillaBlocks::DIORITE_SLAB(), $dioriteColor);
+        $this->registerSimple(VanillaBlocks::DIORITE_STAIRS(), $dioriteColor);
+        $andesiteColor = Color::fromRGB(0xa6aaa5);
+        $this->registerSimple(VanillaBlocks::ANDESITE(), $andesiteColor);
+        $this->registerHalf(VanillaBlocks::ANDESITE_SLAB(), $andesiteColor);
+        $this->registerSimple(VanillaBlocks::ANDESITE_STAIRS(), $andesiteColor);
+        $graniteColor = Color::fromRGB(0xad7c70);
+        $this->registerSimple(VanillaBlocks::GRANITE(), $graniteColor);
+        $this->registerHalf(VanillaBlocks::GRANITE_SLAB(), $graniteColor);
+        $this->registerSimple(VanillaBlocks::GRANITE_STAIRS(), $graniteColor);
 
         $this->registerSimple(VanillaBlocks::ICE(),  Color::fromRGBA(0xcde6f4bb));
         $this->registerSimple(VanillaBlocks::SNOW(), Color::fromRGB(0xffffff));
@@ -127,8 +143,27 @@ final class BlockRenderer{
         $this->registerSimple(VanillaBlocks::LAVA_CAULDRON(), $lavaColor);
 
         $this->registerSimple(VanillaBlocks::NETHERRACK(), Color::fromRGB(0x84160e));
-        $this->register(VanillaBlocks::SNOW_LAYER(), function(RenderingEngine $engine, Vector3 $position, SnowLayer $snowLayer, array $sides){
-            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(Vector3::zero(), new Vector3(1, $snowLayer->getLayers()/SnowLayer::MAX_LAYERS, 1)), Color::fromRGB(0xf0f0f0));
+        $this->register(VanillaBlocks::SNOW_LAYER(), function(RenderingEngine $engine, Vector3 $position, int $faceToRender, SnowLayer $snowLayer, array $sides){
+            $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo(Vector3::zero(), new Vector3(1, $snowLayer->getLayers()/SnowLayer::MAX_LAYERS, 1)), Color::fromRGB(0xf0f0f0), ($faceToRender & Cube::FACE_XZ) | Cube::FACE_Y);
+        });
+
+        $this->register(VanillaBlocks::WHEAT(), function(RenderingEngine $engine, Vector3 $position, int $faceToRender, Wheat $wheat, array $sides){
+            $growLevel = $wheat->getAge()/Wheat::MAX_AGE;
+            $color = new Color(
+                (int) floor(104 * (1 - $growLevel) + 216 * $growLevel),
+                (int) floor(206 * (1 - $growLevel) + 216 * $growLevel),
+                (int) 47,
+            );
+            $cube = new Vector3(1/16, $growLevel*0.8, 1/16);
+            $offsets = [
+                new Vector3(3/16, 0.0, 3/16),
+                new Vector3(12/16, 0.0, 3/16),
+                new Vector3(3/16, 0.0, 12/16),
+                new Vector3(12/16, 0.0, 12/16),
+            ];
+            foreach($offsets as $offset){
+                $engine->putCube($position->x, $position->y, $position->z, new OffsettedCubeSizeInfo($offset, $cube), $color, Cube::FACE_YXZ);
+            }
         });
     }
 
@@ -145,17 +180,17 @@ final class BlockRenderer{
     }
 
     private function registerSimple(Block $block, Color $color) : void{
-        $this->register($block, function(RenderingEngine $engine, Vector3 $position) use($color){ $engine->putCube($position->x, $position->y, $position->z, $this->simpleCubeSizeInfo, $color); });
+        $this->register($block, function(RenderingEngine $engine, Vector3 $position, int $faceToRender) use($color){ $engine->putCube($position->x, $position->y, $position->z, $this->simpleCubeSizeInfo, $color, $faceToRender); });
     }
 
     private function registerHalf(Slab $block, Color $color) : void{
-        $this->register($block, function(RenderingEngine $engine, Vector3 $position, Slab $slab) use($color){
+        $this->register($block, function(RenderingEngine $engine, Vector3 $position, int $faceToRender, Slab $slab) use($color){
             $engine->putCube($position->x, $position->y, $position->z, match($slab->getSlabType()->id()){
                 SlabType::BOTTOM()->id() => $this->downerHalfCubeSizeInfo,
                 SlabType::TOP()->id() => $this->upperHalfCubeSizeInfo,
                 SlabType::DOUBLE()->id() => $this->simpleCubeSizeInfo,
                 default => throw new LogicException("cannot happen")
-            }, $color);
+            }, $color, (Cube::FACE_XZ & $faceToRender) | Cube::FACE_Y);
         });
     }
 
@@ -173,7 +208,7 @@ final class BlockRenderer{
                     break;
             }
             foreach($cubes as $cube){
-                $engine->putCube($position->x, $position->y, $position->z, $cube, $color);
+                $engine->putCube($position->x, $position->y, $position->z, $cube, $color, Cube::FACE_YXZ);
             }
         });
     }
@@ -181,7 +216,7 @@ final class BlockRenderer{
     /**
      * @template TBlock of Block
      * @phpstan-param TBlock $block
-     * @phpstan-param Closure(RenderingEngine, Vector3, TBlock):void $renderingFunc 
+     * @phpstan-param Closure(RenderingEngine, Vector3, Cube::FACE_*, TBlock, array<value-of<Type::ARRAY_CONST>, Block>):void $renderingFunc 
      */
     private function register(Block $block, Closure $renderingFunc) : void{
         $typeWithData = $this->getTypeIdWithData($block);
@@ -194,8 +229,9 @@ final class BlockRenderer{
 
     /**
      * @phpstan-param array<value-of<Facing::ALL>, Block> $sides
+     * @phpstan-param Cube::FACE_* $faceToRender
      */
-    public function render(RenderingEngine $engine, Vector3 $position, Block $block, array $sides): void{
-        ($this->blockRenderingFuncs[$this->getTypeIdWithData($block)])($engine, $position, $block, $sides);
+    public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $block, array $sides): void{
+        ($this->blockRenderingFuncs[$this->getTypeIdWithData($block)])($engine, $position, $faceToRender, $block, $sides);
     }
 }
