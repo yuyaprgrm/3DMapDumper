@@ -1,0 +1,7 @@
+parameters:
+  level: 9
+  checkExplicitMixedMissingReturn: true
+  paths:
+    - src
+  bootstrapFiles:
+    - vendor/autoload.php
