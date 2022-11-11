@@ -72,4 +72,8 @@ final class OreModel implements BlockModel{
     public function isCompatibleWith(Block $block): bool{
         return true;
     }
+
+    public function isFullBox(): bool{
+        return true;
+    }
 }

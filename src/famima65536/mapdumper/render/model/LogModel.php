@@ -31,4 +31,8 @@ final class LogModel implements BlockModel{
     public function isCompatibleWith(Block $block) : bool{
         return $block instanceof Wood;
     }
+
+    public function isFullBox(): bool{
+        return true;
+    }
 }

@@ -4,12 +4,12 @@ namespace famima65536\mapdumper\render;
 
 use famima65536\mapdumper\render\model\BoxModel;
 use famima65536\mapdumper\render\model\GrassModel;
+use famima65536\mapdumper\render\model\LiquidModel;
 use famima65536\mapdumper\render\model\LogModel;
 use famima65536\mapdumper\render\model\OreModel;
 use famima65536\mapdumper\render\model\SlabModel;
 use famima65536\mapdumper\render\model\SnowLayerModel;
 use famima65536\mapdumper\render\model\TorchModel;
-use famima65536\mapdumper\render\model\WoodModel;
 use InvalidArgumentException;
 
 final class BlockModelParser{
@@ -42,21 +42,31 @@ final class BlockModelParser{
                 "ore" => self::parseOre($entry),
                 "grass" => self::parseGrass($entry),
                 "log" => self::parseLog($entry),
-                "torch" => self::parseTorch($entry)
-            }
+                "torch" => self::parseTorch($entry),
+                "liquid" => self::parseLiquid($entry)
+            }, $entry["strict_state"] ?? false
         ), $entries);
     }
 
     private static function parseBox(array $json) : BoxModel{
-        return new BoxModel(self::parseColor($json["color"]));
+        return new BoxModel(
+            self::parseColor($json["color"]),
+            self::parseColorOptional($json["edge_color"] ?? null)
+        );
     }
 
     private static function parseSnowLayer(array $json) : SnowLayerModel{
-        return new SnowLayerModel(self::parseColor($json["color"]));
+        return new SnowLayerModel(
+            self::parseColor($json["color"]),
+            self::parseColorOptional($json["edge_color"] ?? null)
+        );
     }
 
     private static function parseSlab(array $json) : SlabModel{
-        return new SlabModel(self::parseColor($json["color"]));
+        return new SlabModel(
+            self::parseColor($json["color"]),
+            self::parseColorOptional($json["edge_color"] ?? null)
+        );
     }
 
     private static function parseOre(array $json) : OreModel{
@@ -73,6 +83,18 @@ final class BlockModelParser{
 
     private static function parseTorch(array $json) : TorchModel{
         return new TorchModel(self::parseColor($json["color"]), self::parseColor($json["head_color"]));
+    }
+
+    private static function parseLiquid(array $json) : LiquidModel{
+        return new LiquidModel(
+            self::parseColor($json["color"]),
+            self::parseColorOptional($json["edge_color"] ?? null)
+        );
+    }
+
+    private static function parseColorOptional(?array $json) : ?int{
+        if($json === null) return null;
+        return self::parseColor($json);
     }
 
     private static function parseColor(array $json) : int{

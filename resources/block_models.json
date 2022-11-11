@@ -41,10 +41,33 @@
       "name": "glass",
       "model": "box",
       "color": {
-        "r": 240,
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "alpha": 0
+      },
+      "edge_color": {
+        "r": 200,
         "g": 240,
-        "b": 240,
-        "alpha": 48
+        "b": 240
+      }
+    },
+    {
+      "name": "flowing_water",
+      "model": "liquid",
+      "color": {
+        "r": 80,
+        "g": 150,
+        "b": 200
+      }
+    },
+    {
+      "name": "flowing_lava",
+      "model": "liquid",
+      "color": {
+        "r": 225,
+        "g": 125,
+        "b": 20
       }
     },
     {
@@ -54,7 +77,8 @@
         "r": 80,
         "g": 150,
         "b": 200
-      }
+      },
+      "strict_state": false
     },
     {
       "name": "still_lava",
@@ -63,7 +87,8 @@
         "r": 225,
         "g": 125,
         "b": 20
-      }
+      },
+      "strict_state": false
     },
     {
       "name": "white_glass",
@@ -393,6 +418,11 @@
         "r": 216,
         "g": 216,
         "b": 216
+      },
+      "edge_color": {
+        "r": 112,
+        "g": 112,
+        "b": 112
       }
     },
     {
@@ -402,6 +432,11 @@
         "r": 216,
         "g": 216,
         "b": 216
+      },
+      "edge_color": {
+        "r": 112,
+        "g": 112,
+        "b": 112
       }
     },
     {
@@ -432,6 +467,48 @@
       }
     },
     {
+      "name": "polished_diorite",
+      "model": "box",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      },
+      "edge_color": {
+        "r": 163,
+        "g": 163,
+        "b": 163
+      }
+    },
+    {
+      "name": "polished_diorite_slab",
+      "model": "slab",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      },
+      "edge_color": {
+        "r": 163,
+        "g": 163,
+        "b": 163
+      }
+    },
+    {
+      "name": "polished_diorite_stairs",
+      "model": "box",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      },
+      "edge_color": {
+        "r": 163,
+        "g": 163,
+        "b": 163
+      }
+    },
+    {
       "name": "andesite",
       "model": "box",
       "color": {
@@ -459,6 +536,48 @@
       }
     },
     {
+      "name": "polished_andesite",
+      "model": "box",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      },
+      "edge_color": {
+        "r": 188,
+        "g": 188,
+        "b": 188
+      }
+    },
+    {
+      "name": "polished_andesite_slab",
+      "model": "slab",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      },
+      "edge_color": {
+        "r": 188,
+        "g": 188,
+        "b": 188
+      }
+    },
+    {
+      "name": "polished_andesite_stairs",
+      "model": "box",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      },
+      "edge_color": {
+        "r": 188,
+        "g": 188,
+        "b": 188
+      }
+    },
+    {
       "name": "granite",
       "model": "box",
       "color": {
@@ -483,6 +602,48 @@
         "r": 173,
         "g": 124,
         "b": 112
+      }
+    },
+    {
+      "name": "polished_granite",
+      "model": "box",
+      "color": {
+        "r": 250,
+        "g": 150,
+        "b": 100
+      },
+      "edge_color": {
+        "r": 230,
+        "g": 160,
+        "b": 110
+      }
+    },
+    {
+      "name": "polished_granite_slab",
+      "model": "slab",
+      "color": {
+        "r": 250,
+        "g": 150,
+        "b": 100
+      },
+      "edge_color": {
+        "r": 230,
+        "g": 160,
+        "b": 110
+      }
+    },
+    {
+      "name": "polished_granite_stairs",
+      "model": "box",
+      "color": {
+        "r": 250,
+        "g": 150,
+        "b": 100
+      },
+      "edge_color": {
+        "r": 230,
+        "g": 160,
+        "b": 110
       }
     },
     {
@@ -570,6 +731,177 @@
         "r": 20,
         "g": 20,
         "b": 20
+      }
+    },
+    {
+      "name": "obsidian",
+      "model": "box",
+      "color": {
+        "r": 37,
+        "g": 31,
+        "b": 43
+      }
+    },
+    {
+      "name": "crying_obsidian",
+      "model": "box",
+      "color": {
+        "r": 61,
+        "g": 46,
+        "b": 73
+      }
+    },
+    {
+      "name": "stained_clay",
+      "model": "box",
+      "color": {
+        "r": 168,
+        "g": 124,
+        "b": 84
+      }
+    },
+    {
+      "name": "white_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 247,
+        "g": 214,
+        "b": 190
+      }
+    },
+    {
+      "name": "orange_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 183,
+        "g": 112,
+        "b": 62
+      }
+    },
+    {
+      "name": "magenta_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 150,
+        "g": 121,
+        "b": 144
+      }
+    },
+    {
+      "name": "light_blue_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 149,
+        "g": 141,
+        "b": 198
+      }
+    },
+    {
+      "name": "yellow_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 224,
+        "g": 188,
+        "b": 47
+      }
+    },
+    {
+      "name": "lime_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 64,
+        "g": 117,
+        "b": 23
+      }
+    },
+    {
+      "name": "pink_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 165,
+        "g": 36,
+        "b": 86
+      }
+    },
+    {
+      "name": "gray_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 38,
+        "g": 12,
+        "b": 22
+      }
+    },
+    {
+      "name": "light_gray_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 119,
+        "g": 73,
+        "b": 53
+      }
+    },
+    {
+      "name": "cyan_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 70,
+        "g": 83,
+        "b": 84
+      }
+    },
+    {
+      "name": "purple_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 114,
+        "g": 65,
+        "b": 90
+      }
+    },
+    {
+      "name": "blue_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 82,
+        "g": 65,
+        "b": 114
+      }
+    },
+    {
+      "name": "brown_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 79,
+        "g": 55,
+        "b": 45
+      }
+    },
+    {
+      "name": "green_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 46,
+        "g": 84,
+        "b": 51
+      }
+    },
+    {
+      "name": "red_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 142,
+        "g": 58,
+        "b": 54
+      }
+    },
+    {
+      "name": "black_stained_clay",
+      "model": "box",
+      "color": {
+        "r": 14,
+        "g": 25,
+        "b": 14
       }
     }
   ]

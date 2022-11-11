@@ -41,7 +41,7 @@ class MapDumpCommand extends Command{
             for($z = 0; $z < $lengthZ; $z++){
                 $chunk = $world->loadChunk($chunkX + $x, $chunkZ + $z);
                 if($chunk === null){
-                    $sender->sendMessage("chunk is not generated.");
+                    // $sender->sendMessage("chunk is not generated.");
                     continue;
                 }
                 $chunks[World::chunkHash($x, $z)] = $chunk;

@@ -47,4 +47,8 @@ final class SlabModel implements BlockModel{
     public function isCompatibleWith(Block $block): bool{
         return $block instanceof Slab;
     }
+
+    public function isFullBox(): bool{
+        return false;
+    }
 }

@@ -17,8 +17,8 @@ final class GrassModel implements BlockModel{
     private CubeInfo $top;
     
     public function __construct(int $baseArgbColor, int $topArgbColor){
-        $this->base = new CubeInfo(Vector3::zero(), new Vector3(1, 7/8, 1), $baseArgbColor);
-        $this->top = new CubeInfo(new Vector3(0, 7/8, 0), new Vector3(1, 1/8, 1), $topArgbColor);
+        $this->base = new CubeInfo(Vector3::zero(), new Vector3(1, 7/8, 1), $baseArgbColor, null);
+        $this->top = new CubeInfo(new Vector3(0, 7/8, 0), new Vector3(1, 1/8, 1), $topArgbColor, null);
     }
 
     public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $block, array $sides) : void{
@@ -27,6 +27,10 @@ final class GrassModel implements BlockModel{
     }
 
     public function isCompatibleWith(Block $block): bool{
+        return true;
+    }
+
+    public function isFullBox(): bool{
         return true;
     }
 }

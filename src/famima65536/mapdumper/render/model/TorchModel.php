@@ -18,8 +18,8 @@ final class TorchModel implements BlockModel{
     private CubeInfo $head;
     
     public function __construct(int $baseArgbColor, int $headArgbColor){
-        $this->base = new CubeInfo(new Vector3(7/16, 0, 7/16), new Vector3(1/8, 1/2, 1/8), $baseArgbColor);
-        $this->head = new CubeInfo(new Vector3(7/16, 1/2, 7/16), new Vector3(1/8, 1/8, 1/8), $headArgbColor);
+        $this->base = new CubeInfo(new Vector3(7/16, 0, 7/16), new Vector3(1/8, 1/2, 1/8), $baseArgbColor, null);
+        $this->head = new CubeInfo(new Vector3(7/16, 1/2, 7/16), new Vector3(1/8, 1/8, 1/8), $headArgbColor, null);
     }
 
     public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $block, array $sides) : void{
@@ -29,5 +29,9 @@ final class TorchModel implements BlockModel{
 
     public function isCompatibleWith(Block $block): bool{
         return $block instanceof Torch;
+    }
+
+    public function isFullBox(): bool{
+        return false;
     }
 }

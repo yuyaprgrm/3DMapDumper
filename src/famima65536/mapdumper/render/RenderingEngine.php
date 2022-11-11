@@ -55,7 +55,7 @@ final class RenderingEngine{
      * 
      */
     public function putCube(float $x, float $y, float $z, CubeInfo $cubeInfo, int $faceToRender) : void{
-        $this->cubes[] = new Cube($cubeInfo->offset->add($x, $y, $z), $cubeInfo->size, $cubeInfo->argbColor, $faceToRender);
+        $this->cubes[] = new Cube($cubeInfo->offset->add($x, $y, $z), $cubeInfo->size, $cubeInfo->argbColor, $cubeInfo->edgeArgbColor, $faceToRender);
     }
 
     private function calculateCubeLayer(Cube $cube) : float{
@@ -88,8 +88,13 @@ final class RenderingEngine{
         if($yLevel < 0) $yLevel = 0;
         if($zLevel < 0) $zLevel = 0;
 
-        // $lineColor = new Color(128, 128, 128);
-        // $gdLineColor = $this->getGdColorByColor($lineColor);
+        $hasEdgeColor = $cube->edgeArgbColor !== null;
+        if($hasEdgeColor){
+            $edgeColor = Color::fromARGB($cube->edgeArgbColor);
+            $xEdgeColor = new Color((int) ($edgeColor->getR() * $xLevel), (int) ($edgeColor->getG() * $xLevel), (int) ($edgeColor->getB() * $xLevel), $edgeColor->getA());
+            $yEdgeColor = new Color((int) ($edgeColor->getR() * $yLevel), (int) ($edgeColor->getG() * $yLevel), (int) ($edgeColor->getB() * $yLevel), $edgeColor->getA());
+            $zEdgeColor = new Color((int) ($edgeColor->getR() * $zLevel), (int) ($edgeColor->getG() * $zLevel), (int) ($edgeColor->getB() * $zLevel), $edgeColor->getA());
+        }
         $xColor = new Color((int) ($color->getR() * $xLevel), (int) ($color->getG() * $xLevel), (int) ($color->getB() * $xLevel), $color->getA());
         $yColor = new Color((int) ($color->getR() * $yLevel), (int) ($color->getG() * $yLevel), (int) ($color->getB() * $yLevel), $color->getA());
         $zColor = new Color((int) ($color->getR() * $zLevel), (int) ($color->getG() * $zLevel), (int) ($color->getB() * $zLevel), $color->getA());
@@ -114,10 +119,13 @@ final class RenderingEngine{
                 $points,
                 $gdColor
             );
-            // imagepolygon($this->image,
-            //     $points,
-            //     $gdLineColor
-            // );
+            if ($hasEdgeColor) {
+                imagepolygon(
+                    $this->image,
+                    $points,
+                    $this->getGdColorByColor($xEdgeColor)
+                );
+            }
         }
 
         if($this->viewSignature->z !== Signature::Zero && $cube->shouldRender(Cube::FACE_Z)){
@@ -141,10 +149,13 @@ final class RenderingEngine{
                 $points,
                 $gdColor
             );
-            // imagepolygon($this->image,
-            //     $points,
-            //     $gdLineColor
-            // );
+            if ($hasEdgeColor) {
+                imagepolygon(
+                    $this->image,
+                    $points,
+                    $this->getGdColorByColor($zEdgeColor)
+                );
+            }
         }
 
         if($this->viewSignature->y !== Signature::Zero && $cube->shouldRender(Cube::FACE_Y)){
@@ -168,10 +179,13 @@ final class RenderingEngine{
                 $points,
                 $gdColor
             );
-            // imagepolygon($this->image,
-            //     $points,
-            //     $gdLineColor
-            // );
+            if ($hasEdgeColor) {
+                imagepolygon(
+                    $this->image,
+                    $points,
+                    $this->getGdColorByColor($yEdgeColor)
+                );
+            }
         }
 
     }

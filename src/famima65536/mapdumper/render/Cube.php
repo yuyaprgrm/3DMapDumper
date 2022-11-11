@@ -21,7 +21,7 @@ final class Cube{
         public readonly Vector3 $position,
         public readonly Vector3 $size,
         public readonly int $argbColor,
-        public readonly int $edgeArgbColor,
+        public readonly ?int $edgeArgbColor,
         public readonly int $faceToRender
     ){
     }

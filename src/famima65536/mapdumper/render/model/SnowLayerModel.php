@@ -32,4 +32,8 @@ final class SnowLayerModel implements BlockModel{
     public function isCompatibleWith(Block $block): bool{
         return $block instanceof SnowLayer;
     }
+
+    public function isFullBox(): bool{
+        return false;
+    }
 }

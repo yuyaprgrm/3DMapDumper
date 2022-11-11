@@ -125,34 +125,35 @@ final class ChunkRenderer{
                     $xInWorld = ($chunkX << SubChunk::COORD_BIT_SIZE) + $x;
                     for($z = 0; $z < SubChunk::EDGE_LENGTH; $z++){
                         $zInWorld = ($chunkZ << SubChunk::COORD_BIT_SIZE) + $z;
-                        $block = $this->getBlock($xInWorld, $yInWorld, $zInWorld);
-                        if($blockRenderer->isRendered($block)){
+                        $blockStateId = $subchunk->getFullBlock($x, $y, $z);
+                        if($blockRenderer->isRendered($blockStateId)){
+                            $block = $this->getBlock($xInWorld, $yInWorld, $zInWorld);
                             $hiderBlocks = [
                                 match($this->viewSignature->y){
-                                    Signature::Positive => $this->getBlock($xInWorld, $yInWorld - 1, $zInWorld),
-                                    Signature::Negative => $this->getBlock($xInWorld, $yInWorld + 1, $zInWorld),
+                                    Signature::Positive => $this->getBlockStateId($xInWorld, $yInWorld - 1, $zInWorld),
+                                    Signature::Negative => $this->getBlockStateId($xInWorld, $yInWorld + 1, $zInWorld),
                                     Signature::Zero => null,
                                 },
                                 match($this->viewSignature->z){
-                                    Signature::Positive => $this->getBlock($xInWorld, $yInWorld, $zInWorld - 1),
-                                    Signature::Negative => $this->getBlock($xInWorld, $yInWorld, $zInWorld + 1),
+                                    Signature::Positive => $this->getBlockStateId($xInWorld, $yInWorld, $zInWorld - 1),
+                                    Signature::Negative => $this->getBlockStateId($xInWorld, $yInWorld, $zInWorld + 1),
                                     Signature::Zero => null,
                                 },
                                 match($this->viewSignature->x){
-                                    Signature::Positive => $this->getBlock($xInWorld - 1, $yInWorld, $zInWorld),
-                                    Signature::Negative => $this->getBlock($xInWorld + 1, $yInWorld, $zInWorld),
+                                    Signature::Positive => $this->getBlockStateId($xInWorld - 1, $yInWorld, $zInWorld),
+                                    Signature::Negative => $this->getBlockStateId($xInWorld + 1, $yInWorld, $zInWorld),
                                     Signature::Zero => null,
                                 },
                             ];
 
                             $faceToRender = 0;
                             foreach($hiderBlocks as $axis => $hiderBlock){
-                                if($hiderBlock === null || $hiderBlock instanceof Transparent){
+                                if($hiderBlock === null || !$blockRenderer->isFullBoxRendered($hiderBlock)){
                                     $faceToRender |= (1 << $axis);
                                 }
                             }
                             if($faceToRender !== 0){
-                                $blockRenderer->render($renderingEngine, new Vector3($x, $yInWorld, $z), $faceToRender, $block, []);
+                                $blockRenderer->render($renderingEngine, new Vector3($x, $yInWorld, $z), $faceToRender, $blockStateId, $block, []);
                             }
                         }
                     }
@@ -162,6 +163,11 @@ final class ChunkRenderer{
         
         $renderingEngine->flush();
         $this->blockCache = [];
+    }
+
+    private function getBlockStateId(int $x, int $y, int $z) : ?int{
+        $chunkHash = World::chunkHash($x >> SubChunk::COORD_BIT_SIZE, $z >> SubChunk::COORD_BIT_SIZE);
+        return ($this->chunks[$chunkHash] ?? null)?->getFullBlock($x & SubChunk::COORD_MASK, $y, $z &  SubChunk::COORD_MASK);
     }
 
     private function getBlock(int $x, int $y, int $z) : ?Block{

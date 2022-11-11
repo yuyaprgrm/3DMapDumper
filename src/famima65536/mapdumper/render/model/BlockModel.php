@@ -20,4 +20,6 @@ interface BlockModel{
     public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $block, array $sides) : void;
 
     public function isCompatibleWith(Block $block) : bool;
+
+    public function isFullBox() : bool;
 }

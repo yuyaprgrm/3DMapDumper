@@ -4,25 +4,13 @@ namespace famima65536\mapdumper\render;
 
 use Closure;
 use famima65536\mapdumper\Main;
-use LogicException;
 use pocketmine\block\Block;
-use pocketmine\block\Slab;
-use pocketmine\block\SnowLayer;
-use pocketmine\block\Stair;
-use pocketmine\block\utils\DirtType;
-use pocketmine\block\utils\DyeColor;
-use pocketmine\block\utils\SlabType;
-use pocketmine\block\VanillaBlocks;
-use pocketmine\block\Wheat;
-use pocketmine\color\Color;
-use pocketmine\math\Axis;
-use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\utils\SingletonTrait;
 use famima65536\mapdumper\render\model\BlockModel;
+use pocketmine\data\runtime\RuntimeDataWriter;
 use pocketmine\item\ItemBlock;
 use pocketmine\item\StringToItemParser;
-use pocketmine\utils\Config;
 
 /**
  * @method static self getInstance()
@@ -40,6 +28,16 @@ final class BlockRenderer{
      * @var array<int, BlockModel>
      */
     private array $blockModels = [];
+
+    /**
+     * @var array<int, bool>
+     */
+    private array $shouldBeRendered = [];
+
+    /**
+     * @var array<int, bool>
+     */
+    private array $shouldBeFullBoxRendered = [];
 
     private function __construct(){
 
@@ -182,12 +180,11 @@ final class BlockRenderer{
             if(!$itemBlock instanceof ItemBlock || !$modelEntry->model->isCompatibleWith($block = $itemBlock->getBlock())){
                 continue;
             }
-            $this->registerV2($block, $modelEntry->model);
+            match($modelEntry->strictState){
+                false => $this->registerUnstrictState($block, $modelEntry->model),
+                true => $this->registerStrictState($block->getStateId(), $modelEntry->model)
+            };
         }
-    }
-
-    private function getTypeIdWithData(Block $block) : int{
-        return ($block->getTypeId() << Block::INTERNAL_STATE_DATA_BITS) + $block->computeTypeData();
     }
 
     // private function registerSimple(Block $block, Color $color) : void{
@@ -234,20 +231,40 @@ final class BlockRenderer{
     //     $this->blockRenderingFuncs[$typeWithData] = $renderingFunc;
     // }
 
-    private function registerV2(Block $block, BlockModel $model){
-        $typeWithData = $this->getTypeIdWithData($block);
-        $this->blockModels[$typeWithData] = $model;
+    private function registerUnstrictState(Block $block, BlockModel $model) : void{
+        $typeId = $block->getTypeId();
+        $typeDataBits = $block->getRequiredTypeDataBits();
+        $computedTypeData = $block->computeTypeData();
+        $stateDataBits = $block->getRequiredStateDataBits();
+        $requiredBits = $typeDataBits + $stateDataBits;
+        for($i = 0, $max = 1 << $stateDataBits; $i < $max; $i++){
+            $writer = new RuntimeDataWriter($requiredBits);
+            $writer->int($typeDataBits, $computedTypeData);
+            $writer->int($stateDataBits, $i);
+            $stateId = ($typeId << Block::INTERNAL_STATE_DATA_BITS) + $writer->getValue();
+            $this->registerStrictState($stateId, $model);
+        }
     }
 
-    public function isRendered(Block $block): bool{
-        return isset($this->blockModels[$this->getTypeIdWithData($block)]);
+    private function registerStrictState(int $stateId, BlockModel $model) : void{
+        $this->shouldBeRendered[$stateId] = true;
+        $this->blockModels[$stateId] = $model;
+        if($model->isFullBox())$this->shouldBeFullBoxRendered[$stateId] = true;
+    }
+
+    public function isRendered(int $blockStateId) : bool{
+        return isset($this->shouldBeRendered[$blockStateId]);
+    }
+
+    public function isFullBoxRendered(int $blockStateId) : bool{
+        return isset($this->shouldBeFullBoxRendered[$blockStateId]);
     }
 
     /**
      * @phpstan-param array<value-of<Facing::ALL>, Block> $sides
      * @phpstan-param Cube::FACE_* $faceToRender
      */
-    public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, Block $block, array $sides): void{
-        $this->blockModels[$this->getTypeIdWithData($block)]->render($engine, $position, $faceToRender, $block, $sides);
+    public function render(RenderingEngine $engine, Vector3 $position, int $faceToRender, int $stateId, Block $block, array $sides): void{
+        $this->blockModels[$stateId]->render($engine, $position, $faceToRender, $block, $sides);
     }
 }
