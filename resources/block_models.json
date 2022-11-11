@@ -1,0 +1,576 @@
+{
+  "version": 0,
+  "entries": [
+    {
+      "name": "dirt",
+      "model": "box",
+      "color": {
+        "r": 214,
+        "g": 134,
+        "b": 85
+      }
+    },
+    {
+      "name": "snow",
+      "model": "box",
+      "color": {
+        "r": 245,
+        "g": 245,
+        "b": 245
+      }
+    },
+    {
+      "name": "sand",
+      "model": "box",
+      "color": {
+        "r": 237,
+        "g": 239,
+        "b": 170
+      }
+    },
+    {
+      "name": "sandstone",
+      "model": "box",
+      "color": {
+        "r": 237,
+        "g": 239,
+        "b": 170
+      }
+    },
+    {
+      "name": "glass",
+      "model": "box",
+      "color": {
+        "r": 240,
+        "g": 240,
+        "b": 240,
+        "alpha": 48
+      }
+    },
+    {
+      "name": "still_water",
+      "model": "box",
+      "color": {
+        "r": 80,
+        "g": 150,
+        "b": 200
+      }
+    },
+    {
+      "name": "still_lava",
+      "model": "box",
+      "color": {
+        "r": 225,
+        "g": 125,
+        "b": 20
+      }
+    },
+    {
+      "name": "white_glass",
+      "model": "box",
+      "color": {
+        "r": 240,
+        "g": 240,
+        "b": 240,
+        "a": 48
+      }
+    },
+    {
+      "name": "sandstone_slab",
+      "model": "slab",
+      "color": {
+        "r": 237,
+        "g": 239,
+        "b": 170
+      }
+    },
+    {
+      "name": "sandstone_stairs",
+      "model": "box",
+      "color": {
+        "r": 237,
+        "g": 239,
+        "b": 170
+      }
+    },
+    {
+      "name": "grass",
+      "model": "grass",
+      "color": {
+        "r": 214,
+        "g": 134,
+        "b": 85
+      },
+      "top_color": {
+        "r": 155,
+        "g": 232,
+        "b": 136
+      }
+    },
+    {
+      "name": "grass_path",
+      "model": "grass",
+      "color": {
+        "r": 214,
+        "g": 134,
+        "b": 85
+      },
+      "top_color": {
+        "r": 188,
+        "g": 145,
+        "b": 52
+      }
+    },
+    {
+      "name": "podzol",
+      "model": "grass",
+      "color": {
+        "r": 214,
+        "g": 134,
+        "b": 85
+      },
+      "top_color": {
+        "r": 186,
+        "g": 111,
+        "b": 76
+      }
+    },
+    {
+      "name": "farmland",
+      "model": "grass",
+      "color": {
+        "r": 214,
+        "g": 134,
+        "b": 85
+      },
+      "top_color": {
+        "r": 145,
+        "g": 86,
+        "b": 49
+      }
+    },
+    {
+      "name": "oak_log",
+      "model": "log",
+      "color": {
+        "r": 169,
+        "g": 99,
+        "b": 53
+      },
+      "inner_color": {
+        "r": 221,
+        "g": 187,
+        "b": 124
+      }
+    },
+    {
+      "name": "oak_leaves",
+      "model": "box",
+      "color": {
+        "r": 62,
+        "g": 130,
+        "b": 42
+      }
+    },
+    {
+      "name": "birch_log",
+      "model": "log",
+      "color": {
+        "r": 229,
+        "g": 240,
+        "b": 229
+      },
+      "inner_color": {
+        "r": 239,
+        "g": 223,
+        "b": 148
+      }
+    },
+    {
+      "name": "birch_leaves",
+      "model": "box",
+      "color": {
+        "r": 135,
+        "g": 210,
+        "b": 120
+      }
+    },
+    {
+      "name": "spruce_log",
+      "model": "log",
+      "color": {
+        "r": 66,
+        "g": 47,
+        "b": 3
+      },
+      "inner_color": {
+        "r": 165,
+        "g": 112,
+        "b": 54
+      }
+    },
+    {
+      "name": "spruce_leaves",
+      "model": "box",
+      "color": {
+        "r": 17,
+        "g": 84,
+        "b": 30
+      }
+    },
+    {
+      "name": "jungle_log",
+      "model": "log",
+      "color": {
+        "r": 107,
+        "g": 65,
+        "b": 38
+      },
+      "inner_color": {
+        "r": 107,
+        "g": 115,
+        "b": 76
+      }
+    },
+    {
+      "name": "jungle_leaves",
+      "model": "box",
+      "color": {
+        "r": 42,
+        "g": 193,
+        "b": 82
+      }
+    },
+    {
+      "name": "dark_oak_log",
+      "model": "log",
+      "color": {
+        "r": 38,
+        "g": 28,
+        "b": 8
+      },
+      "inner_color": {
+        "r": 56,
+        "g": 46,
+        "b": 25
+      }
+    },
+    {
+      "name": "dark_oak_leaves",
+      "model": "box",
+      "color": {
+        "r": 35,
+        "g": 86,
+        "b": 30
+      }
+    },
+    {
+      "name": "oak_planks",
+      "model": "box",
+      "color": {
+        "r": 221,
+        "g": 187,
+        "b": 124
+      }
+    },
+    {
+      "name": "dark_oak_planks",
+      "model": "box",
+      "color": {
+        "r": 56,
+        "g": 46,
+        "b": 25
+      }
+    },
+    {
+      "name": "dark_oak_slab",
+      "model": "slab",
+      "color": {
+        "r": 56,
+        "g": 46,
+        "b": 25
+      }
+    },
+    {
+      "name": "dark_oak_stairs",
+      "model": "box",
+      "color": {
+        "r": 56,
+        "g": 46,
+        "b": 25
+      }
+    },
+    {
+      "name": "birch_planks",
+      "model": "box",
+      "color": {
+        "r": 239,
+        "g": 223,
+        "b": 148
+      }
+    },
+    {
+      "name": "birch_slab",
+      "model": "slab",
+      "color": {
+        "r": 239,
+        "g": 223,
+        "b": 148
+      }
+    },
+    {
+      "name": "birch_stairs",
+      "model": "box",
+      "color": {
+        "r": 239,
+        "g": 223,
+        "b": 148
+      }
+    },
+    {
+      "name": "netherrack",
+      "model": "box",
+      "color": {
+        "r": 132,
+        "g": 22,
+        "b": 14
+      }
+    },
+    {
+      "name": "torch",
+      "model": "torch",
+      "color": {
+        "r": 221,
+        "g": 187,
+        "b": 124
+      },
+      "head_color": {
+        "r": 240,
+        "g": 130,
+        "b": 80
+      }
+    },
+    {
+      "name": "oak_slab",
+      "model": "slab",
+      "color": {
+        "r": 221,
+        "g": 187,
+        "b": 124
+      }
+    },
+    {
+      "name": "oak_stairs",
+      "model": "box",
+      "color": {
+        "r": 221,
+        "g": 187,
+        "b": 124
+      }
+    },
+    {
+      "name": "stone",
+      "model": "box",
+      "color": {
+        "r": 192,
+        "g": 192,
+        "b": 192
+      }
+    },
+    {
+      "name": "gravel",
+      "model": "box",
+      "color": {
+        "r": 175,
+        "g": 170,
+        "b": 170
+      }
+    },
+    {
+      "name": "smooth_stone",
+      "model": "box",
+      "color": {
+        "r": 216,
+        "g": 216,
+        "b": 216
+      }
+    },
+    {
+      "name": "smooth_stone_slab",
+      "model": "slab",
+      "color": {
+        "r": 216,
+        "g": 216,
+        "b": 216
+      }
+    },
+    {
+      "name": "diorite",
+      "model": "box",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      }
+    },
+    {
+      "name": "diorite_slab",
+      "model": "slab",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      }
+    },
+    {
+      "name": "diorite_stairs",
+      "model": "box",
+      "color": {
+        "r": 194,
+        "g": 198,
+        "b": 192
+      }
+    },
+    {
+      "name": "andesite",
+      "model": "box",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      }
+    },
+    {
+      "name": "andesite_slab",
+      "model": "slab",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      }
+    },
+    {
+      "name": "andesite_stairs",
+      "model": "box",
+      "color": {
+        "r": 166,
+        "g": 170,
+        "b": 165
+      }
+    },
+    {
+      "name": "granite",
+      "model": "box",
+      "color": {
+        "r": 173,
+        "g": 124,
+        "b": 112
+      }
+    },
+    {
+      "name": "granite_slab",
+      "model": "slab",
+      "color": {
+        "r": 173,
+        "g": 124,
+        "b": 112
+      }
+    },
+    {
+      "name": "granite_stairs",
+      "model": "box",
+      "color": {
+        "r": 173,
+        "g": 124,
+        "b": 112
+      }
+    },
+    {
+      "name": "cobblestone",
+      "model": "box",
+      "color": {
+        "r": 112,
+        "g": 112,
+        "b": 112
+      }
+    },
+    {
+      "name": "cobblestone_slab",
+      "model": "slab",
+      "color": {
+        "r": 112,
+        "g": 112,
+        "b": 112
+      }
+    },
+    {
+      "name": "cobblestone_stairs",
+      "model": "box",
+      "color": {
+        "r": 112,
+        "g": 112,
+        "b": 112
+      }
+    },
+    {
+      "name": "stone_slab",
+      "model": "slab",
+      "color": {
+        "r": 192,
+        "g": 192,
+        "b": 192
+      }
+    },
+    {
+      "name": "bedrock",
+      "model": "box",
+      "color": {
+        "r": 71,
+        "g": 69,
+        "b": 68
+      }
+    },
+    {
+      "name": "diamond_ore",
+      "model": "ore",
+      "color": {
+        "r": 192,
+        "g": 192,
+        "b": 192
+      },
+      "ore_color": {
+        "r": 144,
+        "g": 231,
+        "b": 244
+      }
+    },
+    {
+      "name": "iron_ore",
+      "model": "ore",
+      "color": {
+        "r": 192,
+        "g": 192,
+        "b": 192
+      },
+      "ore_color": {
+        "r": 240,
+        "g": 240,
+        "b": 240
+      }
+    },
+    {
+      "name": "coal_ore",
+      "model": "ore",
+      "color": {
+        "r": 192,
+        "g": 192,
+        "b": 192
+      },
+      "ore_color": {
+        "r": 20,
+        "g": 20,
+        "b": 20
+      }
+    }
+  ]
+}

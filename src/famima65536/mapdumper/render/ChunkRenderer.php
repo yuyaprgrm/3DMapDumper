@@ -1,6 +1,6 @@
 <?php
 
-namespace famima65536\mapdumper\model;
+namespace famima65536\mapdumper\render;
 
 use GdImage;
 use pocketmine\block\Block;

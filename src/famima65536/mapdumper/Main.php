@@ -7,6 +7,8 @@ use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase{
 
+    public const RESOURCE_ROOT = __DIR__."/../../../resources";
+
     protected function onEnable(): void{
         $this->getServer()->getCommandMap()->registerAll("3DMapDumper", [
             new MapDumpCommand($this->getDataFolder())

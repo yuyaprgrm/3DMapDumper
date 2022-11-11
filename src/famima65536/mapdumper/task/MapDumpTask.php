@@ -2,7 +2,7 @@
 
 namespace famima65536\mapdumper\task;
 
-use famima65536\mapdumper\model\ChunkRenderer;
+use famima65536\mapdumper\render\ChunkRenderer;
 use pocketmine\command\CommandSender;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\AsyncTask;

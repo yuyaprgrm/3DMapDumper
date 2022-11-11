@@ -1,6 +1,6 @@
 <?php
 
-namespace famima65536\mapdumper\model;
+namespace famima65536\mapdumper\render;
 
 use GdImage;
 use pocketmine\color\Color;
@@ -54,8 +54,8 @@ final class RenderingEngine{
     /**
      * 
      */
-    public function putCube(float $x, float $y, float $z, OffsettedCubeSizeInfo $sizeInfo, Color $color, int $faceToRender) : void{
-        $this->cubes[] = new Cube($sizeInfo->offset->add($x, $y, $z), $sizeInfo->size, $color, $faceToRender);
+    public function putCube(float $x, float $y, float $z, CubeInfo $cubeInfo, int $faceToRender) : void{
+        $this->cubes[] = new Cube($cubeInfo->offset->add($x, $y, $z), $cubeInfo->size, $cubeInfo->argbColor, $faceToRender);
     }
 
     private function calculateCubeLayer(Cube $cube) : float{
@@ -71,7 +71,7 @@ final class RenderingEngine{
     }
 
     private function drawCube(Cube $cube) : void{
-        $color = $cube->color;
+        $color = Color::fromARGB($cube->argbColor);
         $a = $this->transform($cube->position->x, $cube->position->y, $cube->position->z);
         $b = $this->transform($cube->position->x+$cube->size->x, $cube->position->y, $cube->position->z);
         $c = $this->transform($cube->position->x, $cube->position->y, $cube->position->z+$cube->size->z);
