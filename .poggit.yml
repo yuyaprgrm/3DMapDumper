@@ -1,0 +1,8 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/famima65536/3DMapDumper
+build-by-default: true
+branches:
+- main
+projects:
+  3DMapDumper:
+    path: ""
+...
